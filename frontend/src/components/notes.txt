@@ -1,0 +1,207 @@
+Warning: PowerShell detected that you might be using a screen reader and has disabled PSReadLine for compatibility purposes. If you want to re-enable it, run 'Import-Module PSReadLine'.
+
+PS D:\zerve> mkdir backend
+
+    Directory: D:\zerve
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----          15-06-2025    22:11                backend
+
+PS D:\zerve> cd backend
+PS D:\zerve\backend> npm init -y
+Wrote to D:\zerve\backend\package.json:
+
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
+
+
+
+PS D:\zerve\backend> npm install express mongoose cors dotenv
+
+added 87 packages, and audited 88 packages in 14s
+
+16 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+
+
+--------------------------------------------------------------------------------------------------
+
+
+PS D:\zerve> cd D:\zerve
+PS D:\zerve> npm create vite@latest frontend --template react
+npm warn "react" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--template". This will stop working in the next major version of npm.
+
+> npx
+> create-vite frontend react
+
+│
+◇  Select a framework:
+│  React
+│
+◇  Select a variant:
+│  JavaScript
+│
+◇  Scaffolding project in D:\zerve\frontend...
+│
+└  Done. Now run:
+
+  cd frontend
+  npm install
+  npm run dev
+
+PS D:\zerve> cd frontend
+PS D:\zerve\frontend> npm install
+
+added 199 packages, and audited 200 packages in 37s
+
+33 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+PS D:\zerve\frontend> npm install -D tailwindcss postcss autoprefixer --legacy-peer-deps
+
+added 5 packages, and audited 205 packages in 5s
+
+35 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+PS D:\zerve\frontend> npx tailwindcss init -p
+npm error could not determine executable to run
+npm error A complete log of this run can be found in: C:\Users\91755\AppData\Local\npm-cache\_logs\2025-06-15T16_49_27_892Z-debug-0.log
+PS D:\zerve\frontend> cd D:\zerve\frontend
+PS D:\zerve\frontend> rd /s /q node_modules
+Remove-Item: A positional parameter cannot be found that accepts argument '/q'.
+PS D:\zerve\frontend> del package-lock.json
+PS D:\zerve\frontend> Remove-Item -Recurse -Force .\node_modules
+PS D:\zerve\frontend> Remove-Item -Force .\package-lock.json
+Remove-Item: Cannot find path 'D:\zerve\frontend\package-lock.json' because it does not exist.
+PS D:\zerve\frontend> npm install -D tailwindcss postcss autoprefixer --legacy-peer-deps
+
+added 204 packages, and audited 205 packages in 10s
+
+35 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+PS D:\zerve\frontend> npx tailwindcss init -p
+npm error could not determine executable to run
+npm error A complete log of this run can be found in: C:\Users\91755\AppData\Local\npm-cache\_logs\2025-06-15T16_51_32_158Z-debug-0.log
+PS D:\zerve\frontend> cd D:\zerve
+PS D:\zerve> rmdir /s /q frontend         ← Or just delete the `frontend` folder manually
+Remove-Item: A positional parameter cannot be found that accepts argument '/q'.
+PS D:\zerve> Remove-Item -Recurse -Force .\frontend
+PS D:\zerve> npm create vite@latest frontend --template react
+npm warn "react" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--template". This will stop working in the next major version of npm.
+
+> npx
+> create-vite frontend react
+
+│
+■  Select a framework:
+│  Vanilla
+│
+└  Operation cancelled
+
+PS D:\zerve> npm create vite@latest
+
+> npx
+> create-vite
+
+│
+◇  Project name:
+│  frontend
+│
+◇  Select a framework:
+│  React
+│
+◇  Select a variant:
+│  JavaScript
+│
+◇  Scaffolding project in D:\zerve\frontend...
+│
+└  Done. Now run:
+
+  cd frontend
+  npm install
+  npm run dev
+
+PS D:\zerve> cd frontend
+PS D:\zerve\frontend> npm install -D tailwindcss@3.4.1 postcss@8.4.38 autoprefixer@10.4.19 --legacy-peer-deps
+
+added 295 packages, and audited 296 packages in 37s
+
+62 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+PS D:\zerve\frontend> npm run dev
+
+> frontend@0.0.0 dev
+> vite
+
+
+  VITE v6.3.5  ready in 529 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+10:27:33 pm [vite] (client) hmr update /src/App.jsx, /src/index.css
+10:27:37 pm [vite] (client) hmr update /src/App.jsx, /src/index.css (x2)
+10:30:12 pm [vite] (client) hmr update /src/App.jsx, /src/index.css (x3)
+10:30:12 pm [vite] Internal server error: Failed to resolve import "./pages/LandingPage" from "src/App.jsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: D:/zerve/frontend/src/App.jsx:2:24
+  16 |  }
+  17 |  import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+  18 |  import LandingPage from "./pages/LandingPage";
+     |                           ^
+  19 |  import Home from "./pages/Home";
+  20 |  function App() {
+      at TransformPluginContext._formatLog (file:///D:/zerve/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42499:41)
+      at TransformPluginContext.error (file:///D:/zerve/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42496:16)
+      at normalizeUrl (file:///D:/zerve/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40475:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///D:/zerve/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40594:37
+      at async Promise.all (index 4)
+      at async TransformPluginContext.transform (file:///D:/zerve/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:40521:7)
+      at async EnvironmentPluginContainer.transform (file:///D:/zerve/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18)
+      at async loadAndTransform (file:///D:/zerve/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27)
+      at async viteTransformMiddleware (file:///D:/zerve/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24)
+10:30:42 pm [vite] (client) page reload src/App.jsx
+PS D:\zerve\frontend> npm install react-router-dom
+
+added 51 packages, removed 2 packages, changed 1 package, and audited 301 packages in 6s
+
+62 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+PS D:\zerve\frontend> npm install react-icons
+
+added 1 package, and audited 302 packages in 6s
+
+62 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+PS D:\zerve\frontend> 
+
+---------------------------------------------------------------------------------------
