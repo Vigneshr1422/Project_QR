@@ -82,7 +82,7 @@ const verifyOtp = async () => {
       {/* Header */}
       <header className="flex justify-between items-center px-8 py-4 bg-white shadow-md sticky top-0 z-50">
         <div className="flex items-center space-x-4">
-          <img src="/src/assets/zervepic.png" alt="Zerve Logo" className="h-16 w-auto" />
+          <img src="/public/images/zervepic.png" alt="Zerve Logo" className="h-16 w-auto" />
           <span className="text-3xl font-extrabold text-[#660033] tracking-wide">zerve</span>
         </div>
 

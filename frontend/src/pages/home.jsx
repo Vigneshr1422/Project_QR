@@ -9,19 +9,19 @@ const services = [
     title: 'Faluda',
     subtitle: 'Cool & Sweet Delights',
     discount: 'Only ₹99',
-    image: '/src/assets/faludaa.png',
+    image: '/public/images/faludaa.png',
   },
   {
     title: 'Food',
     subtitle: 'Tasty Main Courses',
     discount: 'Upto 60% OFF',
-    image: '/src/assets/foodd.jpg',
+    image: '/public/images/foodd.jpg',
   },
   {
     title: 'Drinks',
     subtitle: 'Fresh Beverages',
     discount: 'Flat ₹30 OFF',
-    image: '/src/assets/juice.png',
+    image: '/public/images/juice.png',
   },
 ];
 
@@ -120,7 +120,7 @@ const paginatedTestimonials = testimonials.slice(
 
         <input
           type="text"
-          placeholder="Search your favorite items..."
+          placeholder=" 🔎Search your favorite items..."
           className="w-full max-w-md px-5 py-3 rounded-xl shadow-lg outline-none mb-10"
         />
 
@@ -167,17 +167,17 @@ const paginatedTestimonials = testimonials.slice(
             {
               title: 'Faluda Specials',
               desc: 'Delicious creamy faluda with a variety of flavors.',
-              icon: '/src/assets/faludaa.png',
+              icon: '/public/images/faludaa.png',
             },
             {
               title: 'Main Course',
               desc: 'From biryanis to burgers – feast time!',
-              icon: '/src/assets/foodd.jpg',
+              icon: '/public/images/foodd.jpg',
             },
             {
               title: 'Cool Drinks',
               desc: 'Refreshing juices & mocktails to chill your soul.',
-              icon: '/src/assets/juice.png',
+              icon: '/public/images/juice.png',
             },
           ].map((item, idx) => (
             <div
@@ -208,7 +208,7 @@ const paginatedTestimonials = testimonials.slice(
 
 <div className="flex flex-col md:flex-row justify-center items-start gap-12 max-w-6xl mx-auto pb-1">
           <div className="flex flex-col gap-6">
-            {[{ title: 'Healthy', icon: '/src/assets/foodpic.png' }, { title: 'Veg Mode', icon: '/src/assets/veg.png' }, { title: 'Plan a Party', icon: '/src/assets/party.png' }].map((item, idx) => (
+            {[{ title: 'Healthy', icon: '/public/images/foodpic.png' }, { title: 'Veg Mode', icon: '/public/images/veg.png' }, { title: 'Plan a Party', icon: '/public/images/party.png' }].map((item, idx) => (
               <div
                 key={idx}
                 className="w-[160px] h-[150px] bg-white shadow-md rounded-xl flex flex-col items-center justify-center p-4 hover:scale-105 transition"
@@ -227,7 +227,7 @@ const paginatedTestimonials = testimonials.slice(
 
           <div className="w-full md:w-[600px] h-[600px] flex justify-center items-center">
             <img
-              src="/src/assets/design.gif"
+              src="/public/images/design.gif"
               alt="Food on Train"
               className="w-full h-full object-contain"
               data-aos="zoom-in"
@@ -235,7 +235,7 @@ const paginatedTestimonials = testimonials.slice(
           </div>
 
           <div className="flex flex-col gap-6">
-            {[{ title: 'Gourmet', icon: '/src/assets/gourmet.png' }, { title: 'Offers', icon: '/src/assets/offer.png' }, { title: 'Collections', icon: '/src/assets/buger.png' }].map((item, idx) => (
+            {[{ title: 'Gourmet', icon: '/public/images/gourmet.png' }, { title: 'Offers', icon: '/public/images/offer.png' }, { title: 'Collections', icon: '/public/images/buger.png' }].map((item, idx) => (
               <div
                 key={idx}
                 className="w-[160px] h-[150px] bg-white shadow-md rounded-xl flex flex-col items-center justify-center p-4 hover:scale-105 transition"
