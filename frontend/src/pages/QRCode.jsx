@@ -11,10 +11,9 @@ const QRCodeManager = () => {
   const [savedQRCodes, setSavedQRCodes] = useState([]);
   const [activeTab, setActiveTab] = useState('generate');
   const [search, setSearch] = useState('');
-
   const [userPhone, setUserPhone] = useState('');
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const isAdmin = userPhone === '6380792434';
 
   useEffect(() => {
@@ -30,7 +29,7 @@ const QRCodeManager = () => {
     const qrList = [];
     for (let i = 0; i < Number(count); i++) {
       const table = `${prefix}${Number(start) + i}`;
-      const value = `https://zerve.com/table/${table}`;
+const value = `https://desserttap.netlify.app/menu?table=${table}`;
       try {
         const dataUrl = await QRCode.toDataURL(value);
         qrList.push({ table, image: dataUrl, value });
@@ -42,25 +41,38 @@ const QRCodeManager = () => {
   };
 
   const handleSaveToBackend = async (qr) => {
-    if (!isAdmin) return alert('Only admin can save QR codes');
     try {
-      const response = await fetch('http://localhost:5000/api/save-qr', {
+      const res = await fetch('https://desserttap.onrender.com/api/save-qr', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: qr.image, table: qr.table }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(qr),
       });
-      const data = await response.json();
-      alert(data.message);
-      fetchSavedQRCodes();
-    } catch (err) {
-      alert('Error saving QR to backend');
-      console.error(err);
+
+      const data = await res.json();
+
+      if (res.ok) {
+        fetchSavedQRCodes();
+      } else {
+        alert('❌ Save Failed: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      alert('❌ Error saving QR');
     }
+  };
+
+  const handleSaveAll = async () => {
+    for (const qr of bulkQRCodes) {
+      await handleSaveToBackend(qr);
+    }
+    alert('✅ All QR codes saved successfully!');
   };
 
   const fetchSavedQRCodes = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/get-all-qr');
+      const res = await fetch('https://desserttap.onrender.com/api/get-all-qr');
       const data = await res.json();
       setSavedQRCodes(data);
     } catch (err) {
@@ -69,14 +81,22 @@ const QRCodeManager = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!isAdmin) return alert('Only admin can delete QR codes');
     try {
-      await fetch(`http://localhost:5000/api/delete-qr/${id}`, {
+      const confirmDelete = window.confirm('Are you sure you want to delete this QR code?');
+      if (!confirmDelete) return;
+
+      const res = await fetch(`https://desserttap.onrender.com/api/delete-qr/${id}`, {
         method: 'DELETE',
       });
-      fetchSavedQRCodes();
+
+      if (res.ok) {
+        fetchSavedQRCodes();
+      } else {
+        alert('❌ Failed to delete QR code');
+      }
     } catch (err) {
-      alert('Error deleting QR');
+      alert('❌ Error deleting QR');
+      console.error(err);
     }
   };
 
@@ -90,24 +110,29 @@ const QRCodeManager = () => {
     qr.table.toLowerCase().includes(search.toLowerCase())
   );
 
-  return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-bold text-[#880044]">🧾 QR Code Manager</h1>
+
+
+
+return (
+    <div className="p-4 sm:p-8 max-w-6xl mx-auto overflow-x-hidden">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6 text-center md:text-left">
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#880044]">🧾 QR Code Manager</h1>
         <button
           onClick={() => navigate('/admin')}
-          className="flex items-center bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300"
+          className="flex items-center justify-center bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300"
         >
           <FaArrowLeft className="mr-2" /> Back to Admin
         </button>
       </div>
 
-      <div className="flex justify-center mb-8 space-x-4">
+      {/* Tabs */}
+      <div className="flex flex-wrap justify-center mb-8 gap-4">
         {['generate', 'view'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-6 py-2 rounded-full ${
+            className={`px-6 py-2 rounded-full transition ${
               activeTab === tab
                 ? 'bg-[#880044] text-white shadow'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
@@ -118,54 +143,68 @@ const QRCodeManager = () => {
         ))}
       </div>
 
+      {/* Generate Tab */}
       {activeTab === 'generate' && (
         <>
-          <div className="flex flex-wrap justify-center gap-4 mb-6">
-            <div className="relative">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4 mb-6">
+            <div className="relative w-72 max-w-full">
               <FaTable className="absolute left-3 top-3 text-gray-400" />
               <input
                 type="text"
                 placeholder="Table Prefix"
                 value={prefix}
                 onChange={(e) => setPrefix(e.target.value)}
-                className="pl-10 pr-4 py-2 border rounded w-44"
+                className="pl-10 pr-4 py-2 border rounded w-full"
               />
             </div>
-            <div className="relative">
+            <div className="relative w-72 max-w-full">
               <FaHashtag className="absolute left-3 top-3 text-gray-400" />
               <input
                 type="number"
                 placeholder="Start Number"
                 value={start}
                 onChange={(e) => setStart(e.target.value)}
-                className="pl-10 pr-4 py-2 border rounded w-44"
+                className="pl-10 pr-4 py-2 border rounded w-full"
               />
             </div>
-            <div className="relative">
+            <div className="relative w-72 max-w-full">
               <FaLayerGroup className="absolute left-3 top-3 text-gray-400" />
               <input
                 type="number"
                 placeholder="How Many?"
                 value={count}
                 onChange={(e) => setCount(e.target.value)}
-                className="pl-10 pr-4 py-2 border rounded w-44"
+                className="pl-10 pr-4 py-2 border rounded w-full"
               />
             </div>
-            <button
-              onClick={handleGenerateBulkQR}
-              className="px-6 py-2 bg-[#880044] text-white rounded hover:bg-[#aa3366]"
-            >
-              Generate All
-            </button>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={handleGenerateBulkQR}
+                className="px-6 py-2 bg-[#880044] text-white rounded hover:bg-[#aa3366] w-full sm:w-auto"
+              >
+                Generate All
+              </button>
+
+              {bulkQRCodes.length > 0 && (
+                <button
+                  onClick={handleSaveAll}
+                  className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-800 w-full sm:w-auto"
+                >
+                  💾 Save All
+                </button>
+              )}
+            </div>
           </div>
 
+          {/* Show Generated QR Codes */}
           {bulkQRCodes.length > 0 && (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {bulkQRCodes.map((qr, idx) => (
                 <div key={idx} className="border p-4 rounded shadow text-center">
                   <h2 className="font-semibold text-[#880044] mb-2">{qr.table}</h2>
-                  <img src={qr.image} alt={qr.table} className="w-40 h-40 mx-auto" />
-                  <div className="mt-3 space-x-2">
+                  <img src={qr.image} alt={qr.table} className="w-32 h-32 sm:w-40 sm:h-40 mx-auto" />
+                  <div className="mt-3">
                     <button
                       onClick={() => {
                         const link = document.createElement('a');
@@ -173,18 +212,10 @@ const QRCodeManager = () => {
                         link.download = `${qr.table}-qrcode.png`;
                         link.click();
                       }}
-                      className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-800"
+                      className="bg-green-600 text-white px-4 py-1 rounded hover:bg-green-800 w-full sm:w-auto"
                     >
                       ⬇️ Download
                     </button>
-                    {isAdmin && (
-                      <button
-                        onClick={() => handleSaveToBackend(qr)}
-                        className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-800"
-                      >
-                        💾 Save
-                      </button>
-                    )}
                   </div>
                 </div>
               ))}
@@ -193,6 +224,7 @@ const QRCodeManager = () => {
         </>
       )}
 
+      {/* View Tab */}
       {activeTab === 'view' && (
         <>
           <div className="mb-4 text-center">
@@ -201,7 +233,7 @@ const QRCodeManager = () => {
               placeholder="🔍 Search by Table Name"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="px-4 py-2 border rounded w-64"
+              className="px-4 py-2 border rounded w-full max-w-xs"
             />
           </div>
 
@@ -211,18 +243,16 @@ const QRCodeManager = () => {
                 <div key={qr._id} className="border p-4 rounded shadow text-center">
                   <h3 className="text-lg font-medium text-[#660033] mb-2">{qr.table}</h3>
                   <img
-                    src={`http://localhost:5000${qr.image}`}
+                    src={`https://desserttap.onrender.com${qr.image}`}
                     alt={qr.table}
-                    className="w-32 h-32 mx-auto"
+                    className="w-32 h-32 sm:w-40 sm:h-40 mx-auto"
                   />
-                  {isAdmin && (
-                    <button
-                      onClick={() => handleDelete(qr._id)}
-                      className="mt-2 bg-red-600 text-white px-4 py-1 rounded hover:bg-red-800"
-                    >
-                      🗑️ Delete
-                    </button>
-                  )}
+                  <button
+                    onClick={() => handleDelete(qr._id)}
+                    className="mt-2 bg-red-600 text-white px-4 py-1 rounded hover:bg-red-800 w-full sm:w-auto"
+                  >
+                    🗑️ Delete
+                  </button>
                 </div>
               ))}
             </div>
@@ -236,3 +266,4 @@ const QRCodeManager = () => {
 };
 
 export default QRCodeManager;
+
