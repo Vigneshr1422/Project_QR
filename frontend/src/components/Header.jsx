@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import { useNavigate, Link } from 'react-router-dom';
-import { GiFruitBowl } from 'react-icons/gi';
 import imagePaths from '../assets/imagePaths';
 import { UserContext } from '../context/UserContext';
 import { ToastContainer, toast } from 'react-toastify';
+import { GiFruitBowl } from 'react-icons/gi';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Header = () => {
@@ -22,8 +22,11 @@ const Header = () => {
 
   const [stage, setStage] = useState(0);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [sessionId, setSessionId] = useState(''); // ✅ NEW
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
 
   useEffect(() => {
     const savedLogin = localStorage.getItem('isLoggedIn') === 'true';
@@ -45,39 +48,35 @@ const Header = () => {
     setShowLogin(false);
     setStage(0);
     setPhone('');
+    setUsername('');
     setOtp(['', '', '', '', '', '']);
+    setSessionId('');
   };
 
+  const sendOtp = async () => {
+    if (!phone) return toast.error("Please enter phone number.");
+    if (!/^\d{10}$/.test(phone)) return toast.error("Enter valid 10-digit phone number");
 
-const sendOtp = async () => {
-  if (!phone) return toast.error("Please enter phone number.");
-  if (!/^\d{10}$/.test(phone)) return toast.error("Enter valid 10-digit phone number");
+    try {
+      const res = await fetch('http://localhost:5000/api/otp/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone }),
+      });
 
-  const formattedPhone = `+91${phone}`;
-
-  try {
-    const res = await fetch('https://desserttap.onrender.com/api/otp/send-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone: formattedPhone }), // ✅ FIXED here
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      setStage(1);
-      toast.success("OTP sent!");
-    } else {
-      toast.error(data.message || "Failed to send OTP");
+      const data = await res.json();
+      if (data.success) {
+        setSessionId(data.sessionId); // ✅ Save session ID
+        setStage(1);
+        toast.success("OTP sent!");
+      } else {
+        toast.error(data.message || "Failed to send OTP");
+      }
+    } catch (err) {
+      console.error("Send OTP error:", err);
+      toast.error("Network or server error");
     }
-  } catch (err) {
-    console.error("Send OTP error:", err);
-    toast.error("Network or server error");
-  }
-};
-
-
-
-
+  };
 
   const handleOtpChange = (e, index) => {
     const value = e.target.value.replace(/\D/, '');
@@ -90,50 +89,47 @@ const sendOtp = async () => {
     }
   };
 
-const verifyOtp = async () => {
-  const enteredOtp = otp.join('');
-  if (enteredOtp.length !== 6) return toast.error("Enter 6-digit OTP");
+  const verifyOtp = async () => {
+    const enteredOtp = otp.join('');
+    if (enteredOtp.length !== 6) return toast.error("Enter 6-digit OTP");
+    if (!sessionId) return toast.error("Session expired. Please resend OTP.");
 
-  const formattedPhone = `+91${phone}`; // ✅ Add this
+    try {
+      const res = await fetch('http://localhost:5000/api/otp/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId, otp: enteredOtp }),
+      });
 
-  const res = await fetch('https://desserttap.onrender.com/api/otp/verify-otp', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ phone: formattedPhone, otp: enteredOtp }), // ✅ Use formattedPhone
-  });
+      const data = await res.json();
 
-  const data = await res.json();
+      if (!data.success) {
+        toast.error(data.message || "Invalid OTP");
+        return;
+      }
 
-  if (!data.success) {
-    toast.error(data.message || "Invalid OTP");
-    return;
-  }
+      await fetch('https://order-qr.onrender.com/api/user/save-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, phone }),
+      });
 
-  try {
-    await fetch('https://desserttap.onrender.com/api/user/save-user', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, phone }), // store actual 10-digit for user profile
-    });
+      localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('username', username);
+      localStorage.setItem('phone', phone);
 
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('username', username);
-    localStorage.setItem('phone', phone);
+      setIsLoggedIn(true);
+      closeLogin();
 
-    setIsLoggedIn(true);
-    closeLogin();
-
-    const previousPath = window.location.pathname;
-    phone === '6380792434'
-      ? navigate('/admin')
-      : navigate(previousPath === '/order' ? '/order' : '/menu');
-  } catch (err) {
-    console.error("Verify OTP error:", err);
-    toast.error("Error verifying OTP");
-  }
-};
-
-
+      const previousPath = window.location.pathname;
+      phone === '6380792434'
+        ? navigate('/admin')
+        : navigate(previousPath === '/order' ? '/order' : '/menu');
+    } catch (err) {
+      console.error("Verify OTP error:", err);
+      toast.error("Error verifying OTP");
+    }
+  };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
@@ -152,7 +148,7 @@ const verifyOtp = async () => {
         {/* Logo */}
         <div className="flex items-center space-x-3 sm:space-x-4">
           <img src={imagePaths.zervepic} alt="Zerve Logo" className="h-12 sm:h-14 w-auto" />
-          <span className="text-2xl sm:text-3xl font-extrabold text-[#660033] tracking-wide">zerve</span>
+          <span className="text-2xl sm:text-3xl font-extrabold text-[#660033] tracking-wide">Dessert-Tap </span>
         </div>
 
         {/* Desktop Nav */}
@@ -161,6 +157,8 @@ const verifyOtp = async () => {
   <Link to="/menu" className="hover:text-black transition duration-300">Menu</Link>
   <Link to="/menu" state={{ scrollTo: 'jigarthanda-menu' }} className="hover:text-black">Order</Link>
   <Link to="/about" className="hover:text-black transition duration-300">About</Link>
+    <Link to="/all-qrs" className="hover:text-black transition duration-300">Table</Link>
+
 </nav>
 
 
@@ -230,6 +228,8 @@ const verifyOtp = async () => {
   <Link to="/menu" className="block py-2 text-lg text-gray-700" onClick={() => setShowMobileMenu(false)}>Menu</Link>
   <Link to="/menu" state={{ scrollTo: 'jigarthanda-menu' }} className="block py-2 text-lg text-gray-700" onClick={() => setShowMobileMenu(false)}>Order</Link>
   <Link to="/about" className="block py-2 text-lg text-gray-700" onClick={() => setShowMobileMenu(false)}>About</Link>
+    <Link to="/all-qrs" className="block py-2 text-lg text-gray-700" onClick={() => setShowMobileMenu(false)}>Table</Link>
+
 </div>
 
 
@@ -264,12 +264,40 @@ const verifyOtp = async () => {
                     className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-[#660033]"
                   />
                 </div>
-                <button
-                  onClick={sendOtp}
-                  className="w-full bg-[#660033] text-white py-2 rounded hover:bg-pink-800 transition"
-                >
-                  Send OTP
-                </button>
+               <button
+  onClick={async () => {
+    setLoading(true);
+    await sendOtp(); // or just call sendOtp(); and stop loading inside it.
+    setLoading(false);
+  }}
+  className="w-full bg-[#660033] text-white py-2 rounded hover:bg-pink-800 transition flex items-center justify-center"
+>
+  {loading ? (
+    <svg
+      className="animate-spin h-5 w-5 text-white"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v8H4z"
+      ></path>
+    </svg>
+  ) : (
+    "Send OTP"
+  )}
+</button>
+
               </div>
             ) : (
               <div className="space-y-6">
@@ -291,12 +319,40 @@ autoComplete="one-time-code"
 ))}
 
                 </div>
-                <button
-                  onClick={verifyOtp}
-                  className="w-full bg-[#660033] text-white py-2 rounded hover:bg-pink-800 transition"
-                >
-                  Submit
-                </button>
+               <button
+  onClick={async () => {
+    setVerifying(true);
+    await verifyOtp();
+    setVerifying(false);
+  }}
+  className="w-full bg-[#660033] text-white py-2 rounded hover:bg-pink-800 transition flex items-center justify-center"
+>
+  {verifying ? (
+    <svg
+      className="animate-spin h-5 w-5 text-white"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v8H4z"
+      ></path>
+    </svg>
+  ) : (
+    "Submit"
+  )}
+</button>
+
               </div>
             )}
           </div>

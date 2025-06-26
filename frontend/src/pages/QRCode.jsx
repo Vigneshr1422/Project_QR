@@ -42,7 +42,7 @@ const value = `https://desserttap.netlify.app/menu?table=${table}`;
 
   const handleSaveToBackend = async (qr) => {
     try {
-      const res = await fetch('https://desserttap.onrender.com/api/save-qr', {
+      const res = await fetch('https://order-qr.onrender.com/api/save-qr', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const value = `https://desserttap.netlify.app/menu?table=${table}`;
 
   const fetchSavedQRCodes = async () => {
     try {
-      const res = await fetch('https://desserttap.onrender.com/api/get-all-qr');
+      const res = await fetch('https://order-qr.onrender.com/api/get-all-qr');
       const data = await res.json();
       setSavedQRCodes(data);
     } catch (err) {
@@ -85,7 +85,7 @@ const value = `https://desserttap.netlify.app/menu?table=${table}`;
       const confirmDelete = window.confirm('Are you sure you want to delete this QR code?');
       if (!confirmDelete) return;
 
-      const res = await fetch(`https://desserttap.onrender.com/api/delete-qr/${id}`, {
+      const res = await fetch(`https://order-qr.onrender.com/api/delete-qr/${id}`, {
         method: 'DELETE',
       });
 
@@ -243,7 +243,7 @@ return (
                 <div key={qr._id} className="border p-4 rounded shadow text-center">
                   <h3 className="text-lg font-medium text-[#660033] mb-2">{qr.table}</h3>
                   <img
-                    src={`https://desserttap.onrender.com${qr.image}`}
+                    src={`https://order-qr.onrender.com${qr.image}`}
                     alt={qr.table}
                     className="w-32 h-32 sm:w-40 sm:h-40 mx-auto"
                   />

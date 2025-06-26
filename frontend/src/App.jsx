@@ -14,6 +14,8 @@ import { UserContext } from './context/UserContext';
 import SuccessPage from './pages/SuccessPage';
 import AdminOrders from './pages/AdminOrders'
 import About from './pages/About'
+import AllQRCodes from './pages/AllQRCodes'; // adjust path as needed
+
 function Layout() {
   const location = useLocation();
 
@@ -41,6 +43,8 @@ function Layout() {
 <Route path="/success" element={<SuccessPage />} />
 <Route path="/admin-orders" element={<AdminOrders />} />
 <Route path="/about" element={<About />} />
+<Route path="/all-qrs" element={<AllQRCodes />} />
+
 
 
 

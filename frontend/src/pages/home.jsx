@@ -3,29 +3,33 @@ import { useRef } from 'react';
 import React, { useEffect, useState } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Landmark, HeartPulse, Clock, Sparkles, ArrowRight } from 'lucide-react';
+import {  IceCream, Snowflake, Heart } from 'lucide-react';
+
+import { Sparkles, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import imagePaths from '../assets/imagePaths';
 import { FaArrowRight ,FaArrowDown,FaArrowLeft} from 'react-icons/fa'; // import arrow icon
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const services = [
   {
     title: 'Faluda',
-    subtitle: 'Cool & Sweet Delights',
+    subtitle: 'Creamy layers crunchy bites.',
     discount: 'Only ₹99',
     image: imagePaths.vanila,
     scrollId: 'falooda-menu',
   },
   {
     title: 'Jigarthanda',
-    subtitle: 'Tasty Main Courses',
+    subtitle: 'Chill down with our OG dessert drink.',
     discount: 'Upto 60% OFF',
     image: imagePaths.jigar,
     scrollId: 'jigarthanda-menu',
   },
   {
     title: 'Ice Cream',
-    subtitle: 'Fresh Beverages',
+    subtitle: 'Scoops of Joy in Every Bite!',
     discount: 'Flat ₹30 OFF',
     image: imagePaths.iceee,
     scrollId: 'icecream-menu',
@@ -47,7 +51,7 @@ useEffect(() => {
       const entry = entries[0];
       if (entry.isIntersecting) {
         try {
-          const res = await  fetch('http://localhost:5000/api/contact/testimonials'); {/*fetch('https://desserttap.onrender.com/api/contact/testimonials');*/}
+          const res = await  fetch('https://order-qr.onrender.com/api/contact/testimonials'); {/*fetch('https://order-qr.onrender.com/api/contact/testimonials');*/}
           const data = await res.json();
           setTestimonials(data);
         } catch (err) {
@@ -77,7 +81,7 @@ useEffect(() => {
     const data = Object.fromEntries(formData.entries());
 
     {/*
-      const res = await fetch('https://desserttap.onrender.com/api/contact', {
+      const res = await fetch('https://order-qr.onrender.com/api/contact', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(data),
@@ -90,25 +94,45 @@ useEffect(() => {
   // method: 'POST',
   // headers: { 'Content-Type': 'application/json' },
   // body: JSON.stringify(data),
-     const res = await fetch('https://desserttap.onrender.com/api/contact', {
+     const res = await fetch('https://order-qr.onrender.com/api/contact', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(data),
 });
 
-      if (res.ok) {
-        alert('Message sent!');
-        e.target.reset();
-        document.getElementById('testimonial').scrollIntoView({ behavior: 'smooth' });
-        setTestimonials((prev) => [
-          {
-            name: data.name,
-            message: data.message,
-            address: data.address || 'Happy Customer',
-          },
-          ...prev,
-        ]);
-      } else {
+     if (res.ok) {
+toast('❤️', {
+  icon: false,
+  position: 'bottom-center',
+  autoClose: 2000,
+  hideProgressBar: true,
+  closeOnClick: false,
+  pauseOnHover: false,
+  draggable: false,
+  style: {
+    background: 'transparent',
+    boxShadow: 'none',
+    fontSize: '2rem',
+    textAlign: 'center',
+  },
+  bodyStyle: {
+    margin: 0,
+    padding: 0,
+  }
+});
+
+  e.target.reset();
+  document.getElementById('testimonial').scrollIntoView({ behavior: 'smooth' });
+  setTestimonials((prev) => [
+    {
+      name: data.name,
+      message: data.message,
+      address: data.address || 'Happy Customer',
+    },
+    ...prev,
+  ]);
+}
+ else {
         alert('Something went wrong!');
       }
     } catch (err) {
@@ -148,49 +172,49 @@ useEffect(() => {
       </div>
 
       {/* Hero & Services Section */}
-      <div className="bg-orange-500 min-h-[100vh] pt-32 pb-12 px-4 flex flex-col items-center overflow-x-hidden relative z-0" data-aos="fade-up">
-        <h2 className="text-4xl font-bold text-white text-center mb-6">
-          Order food & Drinks. <br /> Discover best Items
-        </h2>
+  <div className="bg-orange-500 min-h-[100vh] pt-32 pb-12 px-4 flex flex-col items-center overflow-x-hidden relative z-0" data-aos="fade-up">
+  <h2 className="text-4xl font-bold text-white text-center mb-6">
+    Craving Something Cool? <br /> Discover Dessert Tap Delights!
+  </h2>
 
-        <input
-          type="text"
-          placeholder=" 🔎Search your favorite items..."
-          className="w-full max-w-md px-5 py-3 rounded-xl shadow-lg outline-none mb-10"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
-        />
+  <input
+    type="text"
+    placeholder=" 🔎 Search your favorite desserts..."
+    className="w-full max-w-md px-5 py-3 rounded-xl shadow-lg outline-none mb-10"
+    value={searchTerm}
+    onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+  />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
-          {filteredServices.map((service, index) => (
-            <div
-              key={index}
-              onClick={() => handleCardClick(service.scrollId)}
-              className="bg-white rounded-3xl shadow-xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer flex flex-row justify-between items-center"
-              data-aos="zoom-in"
-              data-aos-delay={index * 100}
-            >
-              <div className="flex-1 pr-6">
-                <h3 className="text-2xl font-bold text-gray-800">{service.title}</h3>
-                <p className="text-gray-600 text-base">{service.subtitle}</p>
-                <div className="bg-orange-100 text-orange-500 w-fit px-4 py-1 mt-4 rounded-full text-sm font-semibold">
-                  {service.discount}
-                </div>
-                <button
-                  className="mt-5 bg-orange-500 p-3 rounded-full shadow"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCardClick(service.scrollId);
-                  }}
-                >
-                  <ArrowRight className="text-white w-5 h-5" />
-                </button>
-              </div>
-              <img src={service.image} alt={service.title} className="w-32 h-32 object-contain" />
-            </div>
-          ))}
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+    {filteredServices.map((service, index) => (
+      <div
+        key={index}
+        onClick={() => handleCardClick(service.scrollId)}
+        className="bg-white rounded-3xl shadow-xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer flex flex-row justify-between items-center"
+        data-aos="zoom-in"
+        data-aos-delay={index * 100}
+      >
+        <div className="flex-1 pr-6">
+          <h3 className="text-2xl font-bold text-gray-800">{service.title}</h3>
+          <p className="text-gray-600 text-base">{service.subtitle}</p>
+          <div className="bg-orange-100 text-orange-500 w-fit px-4 py-1 mt-4 rounded-full text-sm font-semibold">
+            {service.discount}
+          </div>
+          <button
+            className="mt-5 bg-orange-500 p-3 rounded-full shadow"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCardClick(service.scrollId);
+            }}
+          >
+            <ArrowRight className="text-white w-5 h-5" />
+          </button>
         </div>
+        <img src={service.image} alt={service.title} className="w-32 h-32 object-contain" />
       </div>
+    ))}
+  </div>
+</div>
 
 
 
@@ -267,47 +291,48 @@ useEffect(() => {
 
 
       {/* ✨ Our Menu Section – MISSING DIV FIXED HERE */}
-      <div className="bg-orange-50 py-12 sm:py-16 px-4 sm:px-6 text-center" data-aos="fade-up">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-orange-500 mb-4 leading-snug">
-          Explore Our Menu
-        </h2>
-        <p className="text-gray-600 text-sm sm:text-base max-w-md sm:max-w-xl mx-auto mb-10">
-          From refreshing drinks to mouth-watering delights — we have everything your taste buds crave!
-        </p>
+    <div className="bg-orange-50 py-12 sm:py-16 px-4 sm:px-6 text-center" data-aos="fade-up">
+  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-orange-500 mb-4 leading-snug">
+    Explore Our Menu
+  </h2>
+  <p className="text-gray-600 text-sm sm:text-base max-w-md sm:max-w-xl mx-auto mb-10">
+    Scoop, sip, and savor the coolest combos in town — curated with love by Dessert Tap!
+  </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {[
-            {
-              title: 'Faluda Specials',
-              desc: 'Delicious creamy faluda with a variety of flavors.',
-              icon: imagePaths.faluda,
-            },
-            {
-              title: 'Main Course',
-              desc: 'From biryanis to burgers – feast time!',
-              icon: imagePaths.jigar,
-            },
-            {
-              title: 'Cool Drinks',
-              desc: 'Refreshing juices & mocktails to chill your soul.',
-              icon: imagePaths.juice,
-            },
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              data-aos="fade-up"
-              data-aos-delay={idx * 100}
-              className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300"
-            >
-              <img src={item.icon} alt={item.title} className="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-4" />
-              <h3 className="text-base sm:text-lg md:text-xl font-bold text-orange-500 mb-2">
-                {item.title}
-              </h3>
-              <p className="text-gray-600 text-sm sm:text-base">{item.desc}</p>
-            </div>
-          ))}
-        </div>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+    {[
+      {
+        title: 'Falooda Delights',
+        desc: 'A fusion of flavors — silky vermicelli, ice cream, and fruity charm in every cup.',
+        icon: imagePaths.faluda,
+      },
+      {
+        title: 'Jigarthanda Magic',
+        desc: 'Chill with the authentic taste of Madurai’s iconic creamy, herbal dessert.',
+        icon: imagePaths.jigar,
+      },
+      {
+        title: 'Chill Beverages',
+        desc: 'From mocktails to milkshakes, our drinks are made to refresh and recharge.',
+        icon: imagePaths.juice,
+      },
+    ].map((item, idx) => (
+      <div
+        key={idx}
+        data-aos="fade-up"
+        data-aos-delay={idx * 100}
+        className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300"
+      >
+        <img src={item.icon} alt={item.title} className="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-4" />
+        <h3 className="text-base sm:text-lg md:text-xl font-bold text-orange-500 mb-2">
+          {item.title}
+        </h3>
+        <p className="text-gray-600 text-sm sm:text-base">{item.desc}</p>
       </div>
+    ))}
+  </div>
+</div>
+
 
       {/* ✅ The rest of the sections like What's waiting, Testimonials, Contact, etc. continue as in your original file */}
       {/* Just make sure every `div` or `section` you open is properly closed before the final `</>` */}
@@ -396,37 +421,37 @@ useEffect(() => {
 
 
 
-  {/* Feature Section with Icons */}
+{/* Signature Products Feature Section */}
 <div className="relative bg-white w-full overflow-hidden" data-aos="fade-up">
   <div className="relative z-10 px-4 sm:px-6 py-16 sm:py-20 max-w-6xl mx-auto text-center">
     <h2 className="text-2xl sm:text-4xl font-bold text-pink-600 mb-3 sm:mb-4 leading-snug">
-      Famous Jigarthanda <br className="sm:hidden" /> Flavor Factors
+      Why Everyone Loves <br className="sm:hidden" /> Dessert Tap’s Signature Sips 🍧
     </h2>
     <p className="text-gray-600 text-sm sm:text-lg mb-10 sm:mb-16 max-w-xl mx-auto">
-      From Madurai with Love: A Taste Unmatched!
+      From creamy scoops to chilled classics – Dessert Tap delivers finest indulgence!
     </p>
 
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10">
       {[
         {
-          title: "Tradition",
-          desc: "Our brand has a long history dating back to 1977, showcasing a legacy of quality and tradition in our products.",
-          icon: <Landmark className="w-10 h-10 sm:w-12 sm:h-12 text-orange-500" />,
-        },
-        {
-          title: "Health-Focused",
-          desc: "We don’t add preservatives or artificial colors to our products, that’s what makes us stand tall in our business!",
-          icon: <HeartPulse className="w-10 h-10 sm:w-12 sm:h-12 text-green-500" />,
-        },
-        {
-          title: "Timeless",
-          desc: "Our product’s composition allows for enjoyment throughout the year, adapting to every climate and occasion.",
-          icon: <Clock className="w-10 h-10 sm:w-12 sm:h-12 text-blue-500" />,
-        },
-        {
-          title: "Unmatched Taste",
-          desc: "MFJ LLP’s products shine as the symbol of taste, every ingredient is carefully chosen to create an unforgettable flavor.",
+          title: "Iconic Jigarthanda",
+          desc: "A true Madurai favorite, made with authentic basundi, sarsaparilla syrup, and our secret ice blend for ultimate chill!",
           icon: <Sparkles className="w-10 h-10 sm:w-12 sm:h-12 text-pink-500" />,
+        },
+        {
+          title: "Falooda Fantasy",
+          desc: "Layered with silky vermicelli, basil seeds, and rich kulfi ice cream – every sip is a celebration of texture & taste!",
+          icon: <IceCream className="w-10 h-10 sm:w-12 sm:h-12 text-purple-500" />,
+        },
+        {
+          title: "Premium Ice Creams",
+          desc: "From classic vanilla to exotic rose – our scoops are made fresh, creamy, and full of flavor. No shortcuts!",
+          icon: <Snowflake className="w-10 h-10 sm:w-12 sm:h-12 text-blue-400" />,
+        },
+        {
+          title: "Fresh, Local Ingredients",
+          desc: "We use high-quality milk, seasonal fruits, and zero preservatives to keep every product delicious and wholesome.",
+          icon: <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-green-500" />,
         },
       ].map((item, index) => (
         <div
@@ -599,17 +624,21 @@ useEffect(() => {
           rows="4"
           className="w-full p-3 border border-pink-200 rounded focus:outline-pink-400 text-sm"
         ></textarea>
-        <button
-          type="submit"
-          className="w-full bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 transition duration-300 shadow-md"
-        >
-          Send
-        </button>
+    <button
+  type="submit"
+  className="w-full bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 active:scale-95 transition duration-300 shadow-md"
+>
+  Send
+</button>
+
       </form>
+
     </div>
 
   </div>
 </section>
+      <ToastContainer />
+
     </>
   );
 };

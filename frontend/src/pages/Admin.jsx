@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaQrcode, FaUserShield, FaClipboardList } from 'react-icons/fa';
 
 const Admin = () => {
   const navigate = useNavigate();
+  const [loadingOrders, setLoadingOrders] = useState(false); // 👈 loading state
+
+  const handleViewOrders = () => {
+    setLoadingOrders(true);
+    setTimeout(() => {
+      navigate('/admin-orders');
+    }, 1000); // optional delay to show animation
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#FFF0F5] via-[#FFE5EC] to-[#FFF8F2] flex flex-col items-center justify-center px-6 py-12">
@@ -29,11 +37,42 @@ const Admin = () => {
         </button>
 
         <button
-          onClick={() => navigate('/admin-orders')}
-          className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-[#660033] to-[#FF69B4] text-white text-lg font-semibold rounded-full shadow-lg hover:scale-105 transition-all duration-300"
+          onClick={handleViewOrders}
+          disabled={loadingOrders}
+          className={`w-full flex items-center justify-center gap-3 px-6 py-3 ${
+            loadingOrders ? 'bg-gray-400' : 'bg-gradient-to-r from-[#660033] to-[#FF69B4]'
+          } text-white text-lg font-semibold rounded-full shadow-lg transition-all duration-300`}
         >
-          <FaClipboardList className="text-white text-xl" />
-          View All Orders
+          {loadingOrders ? (
+            <>
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8H4z"
+                ></path>
+              </svg>
+              Loading...
+            </>
+          ) : (
+            <>
+              <FaClipboardList className="text-white text-xl" />
+              View All Orders
+            </>
+          )}
         </button>
       </div>
 
@@ -49,5 +88,6 @@ const Admin = () => {
     </div>
   );
 };
+
 
 export default Admin;

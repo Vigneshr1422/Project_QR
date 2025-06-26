@@ -2,82 +2,52 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
-require('dotenv').config(); // 👈 Load .env variables
+const API_KEY = 'c8680c3c-518c-11f0-a562-0200cd936042'; // Your 2Factor API key
 
-const SERVICE_SID = process.env.TWILIO_VERIFY_SID;
-
-const TWILIO_AUTH = {
-  username: process.env.TWILIO_ACCOUNT_SID,
-  password: process.env.TWILIO_AUTH_TOKEN,
-};
-
-// Send OTP
-const qs = require('querystring');
-
+// ✅ Send OTP (with AUTOGEN)
 router.post('/send-otp', async (req, res) => {
-  const { phone, channel } = req.body;
-  console.log("Received phone:", phone);
+  const { phone } = req.body;
 
-  if (!phone) {
-    return res.status(400).json({ success: false, message: "Phone number missing" });
-  }
+  if (!phone) return res.status(400).json({ success: false, message: 'Phone number required' });
 
   try {
-    const result = await axios.post(
-      `https://verify.twilio.com/v2/Services/${SERVICE_SID}/Verifications`,
-      new URLSearchParams({
-        To: phone,
-        Channel: channel || 'sms',
-      }),
-      {
-        auth: TWILIO_AUTH,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded', // ✅ Required
-        },
-      }
+    const response = await axios.get(
+      `https://2factor.in/API/V1/${API_KEY}/SMS/${phone}/AUTOGEN`
     );
 
-    res.json({ success: true, sid: result.data.sid });
-  } catch (err) {
-    console.error('Send OTP error:', err.response?.data || err.message);
-    res.status(500).json({ success: false, message: 'OTP sending failed' });
-  }
-});
-
-
-router.post('/verify-otp', async (req, res) => {
-  const { phone, otp: code } = req.body;
-
-  if (!phone || !code) {
-    return res.status(400).json({ success: false, message: 'Phone or OTP missing' });
-  }
-
-  try {
-    const result = await axios.post(
-      `https://verify.twilio.com/v2/Services/${SERVICE_SID}/VerificationCheck`,
-      new URLSearchParams({
-        To: phone,
-        Code: code,
-      }),
-      {
-        auth: TWILIO_AUTH,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded', // ✅ required
-        },
-      }
-    );
-
-    if (result.data.status === 'approved') {
-      res.json({ success: true });
+    if (response.data.Status === 'Success') {
+      return res.json({ success: true, sessionId: response.data.Details });
     } else {
-      res.status(400).json({ success: false, message: 'Invalid OTP' });
+      return res.status(400).json({ success: false, message: 'Failed to send OTP' });
     }
   } catch (err) {
-    console.error('Verify OTP error:', err.response?.data || err.message);
-    res.status(500).json({ success: false, message: 'OTP verification failed' });
+    console.error('Send OTP error:', err.message);
+    res.status(500).json({ success: false, message: 'Server error sending OTP' });
   }
 });
 
+// ✅ Verify OTP (using sessionId)
+router.post('/verify-otp', async (req, res) => {
+  const { otp, sessionId } = req.body;
 
+  if (!otp || !sessionId) {
+    return res.status(400).json({ success: false, message: 'OTP and sessionId required' });
+  }
+
+  try {
+    const verifyResponse = await axios.get(
+      `https://2factor.in/API/V1/${API_KEY}/SMS/VERIFY/${sessionId}/${otp}`
+    );
+
+    if (verifyResponse.data.Status === 'Success') {
+      return res.json({ success: true });
+    } else {
+      return res.status(400).json({ success: false, message: 'Invalid OTP' });
+    }
+  } catch (err) {
+    console.error('Verify OTP error:', err.message);
+    res.status(500).json({ success: false, message: 'Server error verifying OTP' });
+  }
+});
 
 module.exports = router;

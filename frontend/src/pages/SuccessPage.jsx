@@ -55,7 +55,7 @@ const SuccessPage = () => {
           paymentId: response.razorpay_payment_id,
         };
 
-        fetch('https://desserttap.onrender.com/api/save-payment', {
+        fetch('https://order-qr.onrender.com/api/save-payment', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),

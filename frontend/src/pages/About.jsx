@@ -55,18 +55,23 @@ const About = () => {
             Hi, I'm Vignesh R 👋
           </h1>
 
-         <p className="text-gray-700 text-base sm:text-lg leading-relaxed text-justify">
-  I'm a passionate software developer from <strong>Karaikudi, Tamil Nadu</strong>, recently completed my MCA and currently building full-stack applications.
-  I love creating responsive UIs and solving real-world problems with clean backend logic.
+<p className="text-gray-700 text-base sm:text-lg leading-relaxed text-justify">
+  I’m a passionate full‑stack developer from <strong>Karaikudi, Tamil Nadu</strong>, and I recently completed my MCA from <strong>Kumarasamy College of Engineering</strong>. I specialize in building clean, responsive, and user‑friendly web applications using the <strong>MERN stack</strong>.
+  <br /><br />
+  My strength lies in creating seamless digital experiences by combining strong backend logic with elegant frontend design. I enjoy solving real‑world problems and have honed my analytical and debugging skills through consistent practice on platforms like <strong>LeetCode</strong>, which helped me deepen my understanding of <strong>data structures and algorithms</strong>.
+  <br /><br />
+  As a fresher, I bring high energy, strong commitment, and real project experience. I'm eager to join a collaborative team where I can continue learning and contribute to meaningful tech solutions.
 </p>
 
 
-          <p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center md:text-left">
-            <strong>Tech Stack:</strong> React, Tailwind CSS, Node.js, MongoDB, Firebase<br />
-            <strong>Languages:</strong> Java, JavaScript, SQL<br />
-            <strong>Email:</strong> vigneshramesh2208@gmail.com<br />
-            <strong>Phone:</strong> 6380792434
-          </p>
+
+
+<p className="text-sm sm:text-base text-gray-600 leading-relaxed text-center md:text-left">
+ 
+  <strong>Email:</strong> vigneshramesh2208@gmail.com<br />
+  <strong>Phone:</strong> 6380792434
+</p>
+
 
           {/* Resume + Links */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-4 mt-4">

@@ -9,6 +9,7 @@ const contactRoutes = require('./routes/contact');
 const userOrderRoutes = require('./routes/userOrderRoutes');
 const paymentRoutes = require('./routes/payment');
 const otpRoutes = require('./routes/otp');
+const authRoutes = require('./routes/auth');
 
 const path = require('path');
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/user-orders', userOrderRoutes);
 app.use('/api/otp', otpRoutes);
 app.use('/api', paymentRoutes);
+app.use('/api/auth', authRoutes);
 
 // Static folder for QR codes
 app.use('/QRCodes', express.static(path.join(__dirname, 'QRCodes')));
@@ -41,3 +43,4 @@ app.use('/QRCodes', express.static(path.join(__dirname, 'QRCodes')));
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
+
