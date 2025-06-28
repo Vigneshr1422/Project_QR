@@ -1,4 +1,4 @@
-![WhatsApp Image 2025-06-28 at 16 22 53_2d344ebe](https://github.com/user-attachments/assets/91734e08-d3c7-443e-a20f-5ea4d053d78d)🍨 Dessert Tap — QR-Based Dessert Ordering App
+🍨 Dessert Tap — QR-Based Dessert Ordering App
 
 TreatTap lets your guests scan a QR code, browse a dessert menu (like Falooda, Ice Cream, Jigarthanda), add items to the cart, and place orders — all from their mobile. An admin dashboard allows staff to manage tables, orders, and QR codes.
 
