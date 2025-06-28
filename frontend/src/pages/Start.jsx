@@ -24,7 +24,7 @@ function Start() {
       {/* Overlay content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full bg-black/40 text-center px-4">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">
-          Zerve QR Restaurant 🚀
+          Dessert Tap QR Restaurant 🍨
         </h1>
         <button
           onClick={handleClick}

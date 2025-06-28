@@ -9,7 +9,7 @@ const AllQRCodes = () => {
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
 
-    fetch('https://order-qr.onrender.com/api/get-all-qr')
+    fetch('https://dessaer-tap.onrender.com/api/get-all-qr')
       .then(res => res.json())
       .then(data => {
         setQrList(data);
@@ -48,7 +48,7 @@ const AllQRCodes = () => {
             >
               <div className="w-40 h-40 mx-auto mb-4 border-4 border-pink-200 rounded-xl overflow-hidden shadow-md">
                 <img
-                  src={`https://order-qr.onrender.com${qr.image}`}
+                  src={`https://dessaer-tap.onrender.com${qr.image}`}
                   alt={`QR for Table ${qr.table}`}
                   className="w-full h-full object-contain"
                 />

@@ -12,8 +12,8 @@ const Order = () => {
 
   useEffect(() => {
     if (!tableId) {
-      toast.error("❗ Missing Table ID. Please scan QR again.");
-      setTimeout(() => navigate('/'), 2000);
+      toast.error("❗Go To Table , Scan QR Code Then Proceed Order 😊.");
+      setTimeout(() => navigate('/'), 7000);
       return;
     }
 
@@ -50,7 +50,7 @@ const Order = () => {
     };
 
     try {
-      const res = await fetch('https://order-qr.onrender.com/api/user-orders/submit', {
+      const res = await fetch('https://dessaer-tap.onrender.com/api/user-orders/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -267,7 +267,7 @@ export default Order;
 //     };
 
 //     try {
-//       const res = await fetch('https://order-qr.onrender.com/api/user-orders/submit', {
+//       const res = await fetch('https://dessaer-tap.onrender.com/api/user-orders/submit', {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify(payload),

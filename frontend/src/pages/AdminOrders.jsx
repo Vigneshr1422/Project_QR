@@ -8,7 +8,7 @@ const AdminOrders = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('https://order-qr.onrender.com/api/user-orders/admin/all-orders')
+    fetch('https://dessaer-tap.onrender.com/api/user-orders/admin/all-orders')
       .then(res => res.json())
       .then(data => {
         if (data.success) {

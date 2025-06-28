@@ -51,7 +51,7 @@ useEffect(() => {
       const entry = entries[0];
       if (entry.isIntersecting) {
         try {
-          const res = await  fetch('https://order-qr.onrender.com/api/contact/testimonials'); {/*fetch('https://order-qr.onrender.com/api/contact/testimonials');*/}
+          const res = await  fetch('https://dessaer-tap.onrender.com/api/contact/testimonials'); {/*fetch('https://dessaer-tap.onrender.com/api/contact/testimonials');*/}
           const data = await res.json();
           setTestimonials(data);
         } catch (err) {
@@ -81,7 +81,7 @@ useEffect(() => {
     const data = Object.fromEntries(formData.entries());
 
     {/*
-      const res = await fetch('https://order-qr.onrender.com/api/contact', {
+      const res = await fetch('https://dessaer-tap.onrender.com/api/contact', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(data),
@@ -90,11 +90,11 @@ useEffect(() => {
 
       */}
     try {
-  //   const res = await fetch('http://localhost:5000/api/contact', {
+  //   const res = await fetch('https://dessaer-tap.onrender.com/api/contact', {
   // method: 'POST',
   // headers: { 'Content-Type': 'application/json' },
   // body: JSON.stringify(data),
-     const res = await fetch('https://order-qr.onrender.com/api/contact', {
+     const res = await fetch('https://dessaer-tap.onrender.com/api/contact', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(data),
@@ -219,9 +219,60 @@ toast('❤️', {
 
 
 
+
+
+
+
+      {/* ✨ Our Menu Section – MISSING DIV FIXED HERE */}
+    <div className="bg-orange-50 py-12 sm:py-16 px-4 sm:px-6 text-center" data-aos="fade-up">
+      <br />
+      <br />
+  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-orange-500 mb-4 leading-snug">
+    Explore Our Menu
+  </h2>
+  <br />
+  <p className="text-gray-600 text-sm sm:text-base max-w-md sm:max-w-xl mx-auto mb-10">
+    Scoop, sip, and savor the coolest combos in town — curated with love by Dessert Tap!
+  </p>
+  <br />
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+    {[
+      {
+        title: 'Falooda Delights',
+        desc: 'A fusion of flavors — silky vermicelli, ice cream, and fruity charm in every cup.',
+        icon: imagePaths.faluda,
+      },
+      {
+        title: 'Jigarthanda Magic',
+        desc: 'Chill with the authentic taste of Madurai’s iconic creamy, herbal dessert.',
+        icon: imagePaths.jigar,
+      },
+      {
+        title: 'Chill Beverages',
+        desc: 'From mocktails to milkshakes, our drinks are made to refresh and recharge.',
+        icon: imagePaths.juice,
+      },
+    ].map((item, idx) => (
+      <div
+        key={idx}
+        data-aos="fade-up"
+        data-aos-delay={idx * 100}
+        className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300"
+      >
+        <img src={item.icon} alt={item.title} className="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-4" />
+        <h3 className="text-base sm:text-lg md:text-xl font-bold text-orange-500 mb-2">
+          {item.title}
+        </h3>
+        <p className="text-gray-600 text-sm sm:text-base">{item.desc}</p>
+      </div>
+    ))}
+  </div>
+</div>
+
 <section className="bg-[#FFF8F2] py-12 px-4 sm:px-6 md:px-12" data-aos="fade-up">
   <h2 className="text-3xl sm:text-4xl font-bold text-center text-pink-700 mb-14">
-    How Zerve Works 🍽️
+    How Dessert Tap Works 🍨
   </h2>
 
   {/* Top Row → → → */}
@@ -287,52 +338,6 @@ toast('❤️', {
     </div>
   </div>
 </section>
-
-
-
-      {/* ✨ Our Menu Section – MISSING DIV FIXED HERE */}
-    <div className="bg-orange-50 py-12 sm:py-16 px-4 sm:px-6 text-center" data-aos="fade-up">
-  <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-orange-500 mb-4 leading-snug">
-    Explore Our Menu
-  </h2>
-  <p className="text-gray-600 text-sm sm:text-base max-w-md sm:max-w-xl mx-auto mb-10">
-    Scoop, sip, and savor the coolest combos in town — curated with love by Dessert Tap!
-  </p>
-
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-    {[
-      {
-        title: 'Falooda Delights',
-        desc: 'A fusion of flavors — silky vermicelli, ice cream, and fruity charm in every cup.',
-        icon: imagePaths.faluda,
-      },
-      {
-        title: 'Jigarthanda Magic',
-        desc: 'Chill with the authentic taste of Madurai’s iconic creamy, herbal dessert.',
-        icon: imagePaths.jigar,
-      },
-      {
-        title: 'Chill Beverages',
-        desc: 'From mocktails to milkshakes, our drinks are made to refresh and recharge.',
-        icon: imagePaths.juice,
-      },
-    ].map((item, idx) => (
-      <div
-        key={idx}
-        data-aos="fade-up"
-        data-aos-delay={idx * 100}
-        className="bg-white rounded-2xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300"
-      >
-        <img src={item.icon} alt={item.title} className="w-16 h-16 sm:w-20 sm:h-20 object-contain mb-4" />
-        <h3 className="text-base sm:text-lg md:text-xl font-bold text-orange-500 mb-2">
-          {item.title}
-        </h3>
-        <p className="text-gray-600 text-sm sm:text-base">{item.desc}</p>
-      </div>
-    ))}
-  </div>
-</div>
-
 
       {/* ✅ The rest of the sections like What's waiting, Testimonials, Contact, etc. continue as in your original file */}
       {/* Just make sure every `div` or `section` you open is properly closed before the final `</>` */}
@@ -567,24 +572,26 @@ toast('❤️', {
   <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
     
     {/* Map Section */}
-    <div className="w-full" data-aos="fade-right">
-      <h3 className="text-xl sm:text-2xl font-bold text-pink-600 mb-4 text-center md:text-left">
-        📍 Our Location
-      </h3>
-      <div className="w-full h-64 sm:h-80">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=..."
-          className="w-full h-full rounded-xl border"
-          allowFullScreen=""
-          loading="lazy"
-        ></iframe>
-      </div>
-    </div>
+ <div className="w-full" data-aos="fade-right">
+  <h3 className="text-xl sm:text-2xl font-bold text-pink-600 mb-4 text-center md:text-left">
+    📍 Our Location
+  </h3>
+  <div className="w-full h-64 sm:h-80">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3912.676395963004!2d78.77753257473838!3d10.066021972012362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b006f4ab69b9bdf%3A0x71e33f0f3158581d!2s3QC7%2B437%2C%20Sekkalai%2C%20Karaikudi%2C%20Tamil%20Nadu%20630102!5e0!3m2!1sen!2sin!4v1719568049983!5m2!1sen!2sin"
+      className="w-full h-full rounded-xl border"
+      allowFullScreen=""
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+</div>
+
 
     {/* Contact Form */}
     <div className="w-full md:pl-6" data-aos="fade-left">
       <h3 className="text-xl sm:text-2xl font-bold text-pink-600 mb-4 text-center md:text-left">
-        📬 Get in Touch
+        📬 Give Review 
       </h3>
       <form
         className="bg-white border border-pink-300 p-5 sm:p-6 rounded-xl shadow space-y-4"

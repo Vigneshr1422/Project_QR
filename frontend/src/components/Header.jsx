@@ -58,7 +58,7 @@ const Header = () => {
     if (!/^\d{10}$/.test(phone)) return toast.error("Enter valid 10-digit phone number");
 
     try {
-      const res = await fetch('http://localhost:5000/api/otp/send-otp', {
+      const res = await fetch('https://dessaer-tap.onrender.com/api/otp/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone }),
@@ -95,7 +95,7 @@ const Header = () => {
     if (!sessionId) return toast.error("Session expired. Please resend OTP.");
 
     try {
-      const res = await fetch('http://localhost:5000/api/otp/verify-otp', {
+      const res = await fetch('https://dessaer-tap.onrender.com/api/otp/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId, otp: enteredOtp }),
@@ -108,7 +108,7 @@ const Header = () => {
         return;
       }
 
-      await fetch('https://order-qr.onrender.com/api/user/save-user', {
+      await fetch('https://dessaer-tap.onrender.com/api/user/save-user', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, phone }),
@@ -194,7 +194,7 @@ const Header = () => {
         {/* Desktop User & Seat No */}
         <div className="hidden md:flex items-center space-x-3 sm:space-x-4">
           <span className="text-gray-700 font-semibold text-sm sm:text-base">
-            Seat No: <span className="text-black">{localStorage.getItem('seat') || '-'}</span>
+            <span className="text-black">{localStorage.getItem('seat') || '-'}</span>
           </span>
           <div className="relative">
             <FaUserCircle
